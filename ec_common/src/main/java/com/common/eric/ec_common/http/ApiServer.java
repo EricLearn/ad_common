@@ -1,6 +1,4 @@
-package  com.common.eric.ec_common.http;
-
-import java.util.List;
+package com.common.eric.ec_common.http;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;

@@ -1,6 +1,5 @@
 package com.common.eric.ec_common.http;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
