@@ -1,1 +1,0 @@
-include ':module_app', ':ec_common'
