@@ -4,7 +4,7 @@ package com.common.eric.ec_common.http;
  * Created by Eric
  */
 
-public class HttpTypeHelper {
+public interface HttpTypeHelper {
 
     public class  HttpMethod {
         public static final int HttpMethod_Get = 1;  // Get

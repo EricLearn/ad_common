@@ -22,8 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Eric
  */
 
-public class HttpClient
-{
+public class HttpClient {
+    private static String TAG = "HttpClient LOG";
     private static String BASE_URL = "https://api.douban.com/";
 
     private static volatile HttpClient INSTANCE;
@@ -83,15 +83,22 @@ public class HttpClient
             baseUrl = BASE_URL;
         }
 
+        // 不同模块设置的 baseurl不一样  无法更新
         if (mRetrofitClient == null) {
             mRetrofitClient = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .client(mOkHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-
-            mApiServer = mRetrofitClient.create(ApiServer.class);
         }
+
+        long start  = System.currentTimeMillis();
+
+        mApiServer = mRetrofitClient.create(ApiServer.class);
+
+        long end = System.currentTimeMillis();
+
+        Log.d(TAG,"function last time is "+ (end - start));
     }
 
     /**

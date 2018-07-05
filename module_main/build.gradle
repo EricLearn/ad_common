@@ -28,6 +28,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':ec_common')
+    implementation project(':module_movie')
+    implementation project(':module_shop')
 
     implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
