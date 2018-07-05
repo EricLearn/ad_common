@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ad_common.iml" filepath="$PROJECT_DIR$/ad_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ec_common/ec_common.iml" filepath="$PROJECT_DIR$/ec_common/ec_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_app/module_app.iml" filepath="$PROJECT_DIR$/module_app/module_app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_main/module_main.iml" filepath="$PROJECT_DIR$/module_main/module_main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_movie/module_movie.iml" filepath="$PROJECT_DIR$/module_movie/module_movie.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_shop/module_shop.iml" filepath="$PROJECT_DIR$/module_shop/module_shop.iml" />
+    </modules>
+  </component>
+</project>

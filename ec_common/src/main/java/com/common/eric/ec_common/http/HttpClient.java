@@ -95,8 +95,9 @@ public class HttpClient
     }
 
     /**
-     * 任务的复用  只有成功的任务才会从队列移除，所以如果报错的可以直接复用。
-     * 同时同一个task多次调用之后，直接使用clone，被clone之后前一次调用会cancal，调用只会访问一次。
+     * 任务的复用
+     * 1.只有成功的任务才会从队列移除，所以如果报错的可以直接复用。
+     * 2.同时同一个task多次调用之后，直接使用clone，被clone之后前一次调用会cancal，调用只会访问一次。
      * retrofit中call的clone
      * @param urlPath
      * @return
@@ -116,7 +117,7 @@ public class HttpClient
     /**
      * 保存Task方便维护
      * @param task
-     * @param key  已View名+urlPath 为key
+     * @param key  以View名+urlPath 为key
      */
     private void putTask(Call<ResponseBody> task,String key){
         if (key == null) return;
@@ -153,7 +154,7 @@ public class HttpClient
         }
     }
 
-    // 断网 恢复 后    retrofit 不会主动重新完成刚刚的Task
+    // 断网 恢复 后    retrofit 不会主动重连完成刚刚的Task
 
     public void start(final TaskCallback callback,final String urlPath){
         Call<ResponseBody> task = checkTaskIsExist(urlPath);
@@ -219,12 +220,9 @@ public class HttpClient
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    // 未正常连接到服务端
-                    if (call.isCanceled()) {
-                        // 主动取消
-                    }
-                    else {
-                        // 真的报错
+                    // 未正常连接到服务端  1.主动取消  2.真的报错
+                    if (call.isCanceled() == false) {
+
                     }
                 }
             });
