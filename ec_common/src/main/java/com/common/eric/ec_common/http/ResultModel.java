@@ -55,6 +55,10 @@ public class ResultModel
             mCode = code;
         }
 
+        public HttpError() {
+            super();
+        }
+
         public HttpError(int code, String message){
             super();
             mCode = code;

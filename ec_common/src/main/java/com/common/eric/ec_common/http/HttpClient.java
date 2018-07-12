@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -47,7 +48,7 @@ public class HttpClient {
     private HttpClient(){
         mOkHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(1000L, TimeUnit.MILLISECONDS)
-                //.addInterceptor(new HeaderInterceptor())
+                .addInterceptor(new HeaderInterceptor())
                 .build();
     }
 
@@ -62,7 +63,7 @@ public class HttpClient {
         return INSTANCE;
     }
 
-    private RequestBody body(HashMap params){
+    private RequestBody body(HashMap params) {
         RequestBody body = new RequestBody() {
             @Override
             public MediaType contentType() {
@@ -77,7 +78,7 @@ public class HttpClient {
         return body;
     }
 
-    public void getRetrofit(){
+    public void getRetrofit() {
         String baseUrl = mBuilder.getBaseUrl();
         if (baseUrl.length() == 0) {
             baseUrl = BASE_URL;
@@ -109,7 +110,7 @@ public class HttpClient {
      * @param urlPath
      * @return
      */
-    private Call<ResponseBody> checkTaskIsExist(String urlPath){
+    private Call<ResponseBody> checkTaskIsExist(String urlPath) {
         synchronized (mTaskHold){
             for (String key: mTaskHold.keySet()){
                 if (key.contains(urlPath)){
@@ -133,7 +134,7 @@ public class HttpClient {
         }
     }
 
-    public void cancelTask(String urlPath){
+    public void cancelTask(String urlPath) {
         synchronized (mTaskHold){
             for (String key: mTaskHold.keySet()){
                 if (key.contains(urlPath)){
@@ -147,7 +148,7 @@ public class HttpClient {
         }
     }
 
-    public void cancelAllTask(Object tag){
+    public void cancelAllTask(Object tag) {
         List<String> list = new ArrayList<>();
         synchronized (mTaskHold) {
             for (String key: mTaskHold.keySet()){
@@ -163,7 +164,7 @@ public class HttpClient {
 
     // 断网 恢复 后    retrofit 不会主动重连完成刚刚的Task
 
-    public void start(final TaskCallback callback,final String urlPath){
+    public void start(final TaskCallback callback, final String urlPath) {
         Call<ResponseBody> task = checkTaskIsExist(urlPath);
         if (task == null) {
             if (mBuilder.mHttpMethod == HttpTypeHelper.HttpMethod.HttpMethod_Get) {
@@ -185,7 +186,7 @@ public class HttpClient {
      * @param task
      * @param urlPath
      */
-    private void load(final TaskCallback callback, Call<ResponseBody> task, final String urlPath){
+    private void load(final TaskCallback callback, Call<ResponseBody> task, final String urlPath) {
 
         if (callback != null) callback.taskStart(urlPath);
 
@@ -197,22 +198,29 @@ public class HttpClient {
                     // 正常连接到服务端 响应了
 
                     ResultModel model = new ResultModel();
+                    ResultModel.HttpError error = model.new HttpError();
 
                     if (response.code() == 200) {
                         //访问正确
                         try {
                             String result = response.body().string();
-                            Object object = parseData(result,mBuilder.getParseClass(),mBuilder.mBodyType);
-                            model.setmResult(object);
+                            if (mBuilder.getParseClass() != null) {
+                                Object object = parseData(result,mBuilder.getParseClass(),mBuilder.mBodyType);
+                                model.setmResult(object);
+                            }
+                            else {
+                                error.setCode(HttpTypeHelper.ErrorCode.HttpParseError_Code);
+                                error.setMsg(HttpTypeHelper.ErrorMessage.HttpParseError_Message);
+                            }
                         }
                         catch (IOException | IllegalStateException e) {
                             e.printStackTrace();
                         }
                     }
                     else  {
-                        //访问报错   包括自定义的 errorcode
-                        ResultModel.HttpError error = model.new HttpError(response.code(),response.message());
-                        model.setError(error);
+                        //访问报错   包括和后台约定的 errorcode
+                        error.setCode(response.code());
+                        error.setMsg(response.message());
                     }
 
                     if (response.isSuccessful()){
@@ -222,6 +230,8 @@ public class HttpClient {
                         Log.d("httpclient","访问失败");
                     }
                     cancelTask(urlPath);
+                    if (error != null) model.setError(error);
+
                     if (callback != null)  callback.taskFinish(urlPath, model);
                 }
 
@@ -234,6 +244,10 @@ public class HttpClient {
                 }
             });
         }
+    }
+
+    private void errorHandle(TaskCallback callback,String msg, int code) {
+
     }
 
     /**
@@ -261,8 +275,8 @@ public class HttpClient {
         return object;
     }
 
-    public static final class Builder
-    {
+    public static final class Builder {
+
         private int mHttpMethod = HttpTypeHelper.HttpMethod.HttpMethod_Get;
         private String mBaseUrl = "";
         private String mUrlPath;
@@ -324,11 +338,15 @@ public class HttpClient {
         }
     }
 
-    public class HeaderInterceptor implements Interceptor
-    {
+    public class HeaderInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            return null;
+
+            Request request = chain.request();
+            Request.Builder builder = request.newBuilder();
+            builder.addHeader("XXX","XX");
+
+            return chain.proceed(request);
         }
     }
 }

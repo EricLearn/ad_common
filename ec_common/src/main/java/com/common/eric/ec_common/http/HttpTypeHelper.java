@@ -6,10 +6,18 @@ package com.common.eric.ec_common.http;
 
 public interface HttpTypeHelper {
 
-    public class  HttpMethod {
+    public interface  HttpMethod {
         public static final int HttpMethod_Get = 1;  // Get
         public static final int HttpMethod_Post = 2; // Post
         public static final int HttpMethod_Delete = 3; // Delete
+    }
+
+    public interface ErrorCode {
+        public static int HttpParseError_Code = 1001;
+    }
+
+    public interface ErrorMessage {
+        public static String HttpParseError_Message = "数据解析出错";
     }
 
     /**

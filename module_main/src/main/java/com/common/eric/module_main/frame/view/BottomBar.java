@@ -16,8 +16,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.common.eric.module_movie.movie_home.view.MovieHomeFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
