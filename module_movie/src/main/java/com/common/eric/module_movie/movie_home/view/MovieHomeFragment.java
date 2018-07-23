@@ -3,7 +3,6 @@ package com.common.eric.module_movie.movie_home.view;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +25,14 @@ public class MovieHomeFragment extends BaseFragment implements MovieHomeContract
 
     private MovieHomeContract.Presenter presenter;
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         return LayoutInflater.from(getActivity()).inflate(R.layout.fragment_movie_home,container,false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         Button bt = view.findViewById(R.id.start_bt);
@@ -46,7 +45,7 @@ public class MovieHomeFragment extends BaseFragment implements MovieHomeContract
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         presenter = new MovieHomePresenter(activity,this);

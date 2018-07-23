@@ -37,15 +37,15 @@ public class HttpClient {
 
     private Builder mBuilder;
 
-    public Builder getBuilder(){
+    public Builder getBuilder() {
         return mBuilder;
     }
 
-    private void setBuilder(Builder builder){
+    private void setBuilder(Builder builder) {
         this.mBuilder = builder;
     }
 
-    private HttpClient(){
+    private HttpClient() {
         mOkHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(1000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new HeaderInterceptor())
@@ -127,7 +127,7 @@ public class HttpClient {
      * @param task
      * @param key  以View名+urlPath 为key
      */
-    private void putTask(Call<ResponseBody> task,String key){
+    private void putTask(Call<ResponseBody> task,String key) {
         if (key == null) return;
         synchronized (mTaskHold) {
             mTaskHold.put(key,task);

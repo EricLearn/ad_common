@@ -1,4 +1,4 @@
-package com.common.eric.module_shop.shop_home;
+package com.common.eric.module_shop;
 
 /**
  * Created by Eric on 2018/7/5.

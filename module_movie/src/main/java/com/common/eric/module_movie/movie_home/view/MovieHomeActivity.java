@@ -1,7 +1,6 @@
 package com.common.eric.module_movie.movie_home.view;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.common.eric.ec_common.base.BaseActivity;
 
@@ -12,7 +11,7 @@ import com.common.eric.ec_common.base.BaseActivity;
 public class MovieHomeActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
